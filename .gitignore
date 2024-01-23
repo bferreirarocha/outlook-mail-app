@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+*.debug
+
+# Output of npm (package manager)
+package-lock.json
+npm-debug.log
+
+# Dependency directories
+lib/
+bin/
+dist/
+
+# Editor directories
+.vscode/
+.idea/
+
+# Environment variables file
+.env
