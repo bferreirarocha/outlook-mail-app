@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+</head>
+<body>
+    <h1>Recap Ordini</h1>
+    <p>Ecco il recap dei tuoi ordini recenti:</p>
+    <table>
+        <tr>
+            <th>Id Ordine</th>
+            <th>Nome Prodotto</th>
+            <th>Quantità</th>
+            <th>Prezzo</th>
+        </tr>
+        <% orders.forEach(function(order) { %>
+            <tr>
+                <td><%= order.order_id %></td>
+                <td><%= order.tax_amount %></td>
+                <td><%= order.total_amount %></td>
+                <td><%= order.subtotal_amount %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>
