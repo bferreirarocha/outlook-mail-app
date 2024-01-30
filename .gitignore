@@ -24,3 +24,5 @@ dist/
 
 # Environment variables file
 .env
+
+.fake
