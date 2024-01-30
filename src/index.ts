@@ -1,5 +1,5 @@
 import { Order } from './types/index';
-import express, { Request, Response,NextFunction  } from 'express';
+import express, { Request, Response,NextFunction, response  } from 'express';
 import bodyParser from 'body-parser'; 
 import path from 'path';
 import { ClientSecretCredential } from '@azure/identity'; 
@@ -21,7 +21,7 @@ app.set('views', viewsPath);
 app.set('view engine', 'ejs');
 
 
-console.log("JWT_SECRETKEY:","SmartShopperLedokol2023"); 
+
 export const ensureToken = function(req: Request, res: Response, next: NextFunction) {
     const bearerHeader = req.headers["authorization"];
     console.log("bearerHeader:",bearerHeader);
@@ -40,34 +40,10 @@ export const ensureToken = function(req: Request, res: Response, next: NextFunct
         res.sendStatus(403);
     }
 };
-
-
-const tenantId = 'fd1f35a4-a17d-4d25-9135-a8c37d70fba6';
-const clientId = 'dbe13f8d-0c8e-4a93-a4ea-222bb5bfafe9';
-const clientSecret = 'ezf8Q~eluP.3Wx~bMOXBa0M_pSeyM59583vbBdb~';
-const scopes = ['https://graph.microsoft.com/.default'];
-
-
-
-const clientSecretCredential = new ClientSecretCredential(
-    tenantId,
-    clientId,
-    clientSecret
-);
-
-const graphClient = Client.initWithMiddleware({
-    authProvider: {
-        getAccessToken: async () => {
-            const tokenResponse = await clientSecretCredential.getToken(scopes);
-            return tokenResponse.token;
-        },
-    },
-});
-
-app.get('/', async (req: Request, res: Response) => {
+app.get('/',ensureToken,async (req: Request, res: Response) => {
     try {
         const users = await getUsersData();
-        res.render('index', { users });
+        res.json( users );
     } catch (error) {
         console.error('Error fetching data:', (error as Error).message); // Use (error as Error).message to access the message property
         res.status(500).send(__dirname );
@@ -78,16 +54,22 @@ app.post('/neworder',ensureToken, async (req: Request, res: Response) => {
     try {     
         console.log("services - api/neworder - Start")   
 
-        const   encryptedPayload = req.body; 
+        const encryptedPayload = req.body; 
         console.log("🚀 ~ app.post ~ encryptedPayload:", encryptedPayload)
-
         let newOrder: Order = encryptedPayload;
-        console.log("🚀 ~ app.post ~ newOrder:", newOrder)
-        console.log("newOrder:",newOrder); 
-        OrderReceived(newOrder); 
-
-      //  res.render('index', {users: encryptedPayload });  
-        console.log("services - api/neworder - End")   
+        console.log("🚀 ~ app.post ~ newOrder:", newOrder);
+        console.log("newOrder:", newOrder);
+        OrderReceived(newOrder).then((response: boolean) => {
+            console.log("response:", response); 
+            if(response)
+            res.sendStatus(200);   
+        else    
+            res.sendStatus(403).json({error: "Não foi possível enviar o email"} );      
+        }).catch((error: any) => {
+            console.error('Error processing order:', error);
+            res.sendStatus(500);
+        });
+        console.log("services - api/neworder - End");
 
     } catch (error) {
         console.error('Error fetching data:', (error as Error).message); // Use (error as Error).message to access the message property
@@ -106,9 +88,4 @@ async function getUsersData() {
         { name: 'User 2', email: 'user2@example.com' },
     ];
 } 
-
-
-async function SendMail() {
-    
-}
 
