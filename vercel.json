@@ -11,7 +11,7 @@
        
         "src": "/api/(.*)",
       
-        "dest": "/api/index.ts"
+        "dest": "index.ts"
       }
     ]
   }
