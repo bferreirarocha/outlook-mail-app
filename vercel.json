@@ -11,6 +11,7 @@
         "src": "/api/(.*)",
         "dest": "src/index.ts"
       }
-    ]
+    ],
+    "output": "dist" 
   }
   
