@@ -40,7 +40,7 @@ export const ensureToken = function(req: Request, res: Response, next: NextFunct
         res.sendStatus(403);
     }
 };
-app.get('/',ensureToken,async (req: Request, res: Response) => {
+app.get('/api/',ensureToken,async (req: Request, res: Response) => {
     try {
         const users = await getUsersData();
         res.json( users );
@@ -50,7 +50,7 @@ app.get('/',ensureToken,async (req: Request, res: Response) => {
     }
 });  
 
-app.post('/neworder',ensureToken, async (req: Request, res: Response) => {
+app.post('/api/neworder',ensureToken, async (req: Request, res: Response) => {
     try {     
         console.log("services - api/neworder - Start")   
 
