@@ -5,7 +5,7 @@ import path from 'path';
 import { ClientSecretCredential } from '@azure/identity'; 
 import * as dotenv from 'dotenv';
 import { Client } from '@microsoft/microsoft-graph-client';
-import { OrderReceived } from './services/mailer';
+import { OrderReceived } from './utils/mailer';
 let jwt = require('jsonwebtoken')
 dotenv.config();
 
@@ -15,12 +15,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-const viewsPath = path.join('./src', 'views'); 
-app.set('views', viewsPath);
 app.set('view engine', 'ejs');
-
-
 
 export const ensureToken = function(req: Request, res: Response, next: NextFunction) {
     const bearerHeader = req.headers["authorization"];
@@ -40,7 +35,7 @@ export const ensureToken = function(req: Request, res: Response, next: NextFunct
         res.sendStatus(403);
     }
 };
-app.get('/',ensureToken,async (req: Request, res: Response) => {
+app.get('/',async (req: Request, res: Response) => {
     try {
         const users = await getUsersData();
         res.json( users );
