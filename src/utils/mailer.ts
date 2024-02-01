@@ -59,7 +59,7 @@ const SendMailOrder = async (order:Order) : Promise<boolean> => {
     
 let emailOptions
  try {
-    const ejsTemplatePath = path.join('./src/services/templates', 'Received.ejs'); 
+    const ejsTemplatePath = path.join('./src/utils/templates', 'Received.ejs'); 
     const ejsTemplate = fs.readFileSync(ejsTemplatePath, 'utf-8'); 
      
     const htmlTemplate = ejs.render(ejsTemplate, { order });  

@@ -16,14 +16,14 @@
             <th>Quantità</th>
             <th>Prezzo</th>
         </tr>
-        <% orders.forEach(function(order) { %>
+       
             <tr>
                 <td><%= order.order_id %></td>
                 <td><%= order.tax_amount %></td>
                 <td><%= order.total_amount %></td>
                 <td><%= order.subtotal_amount %></td>
             </tr>
-        <% }); %>
+        
     </table>
 </body>
 </html>
